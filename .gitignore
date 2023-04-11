@@ -1,0 +1,9 @@
+local_*.py
+*.pyc
+.vscode/
+.idea/
+*.sqlite3
+__pycatch__/
+media/product_images/*.*
+media/product_type_images/*.*
+
