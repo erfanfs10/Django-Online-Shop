@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<br>
+<div class="container" >
+    <div class="text-center">
+{% if user.is_authenticated %}
+<form method="post" >
+
+    {% csrf_token %}
+    <h3>{% translate 'are you sure you want to logout?' %}</h3>
+    <button type="submit" class="btn btn-danger">{% translate 'logout' %}</button>
+
+    <h3> <a href="{% url 'home' %}" >{% translate 'back to home' %}</a> </h3>
+
+</form>
+
+{% else %}
+    <h4>you are already logout do you want to <a href="{% url 'login' %}" >log in?</a></h4>
+{% endif %}
+</div>
+</div>
+
+{% endblock %}

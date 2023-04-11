@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    "account",
+    "product",
+    "basket",
+    "order",
+    "payment",
 
 
     'rest_framework',
@@ -133,7 +138,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL="login"
-#AUTH_USER_MODEL = "account.CustomUser"
+AUTH_USER_MODEL = "account.CustomUser"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 

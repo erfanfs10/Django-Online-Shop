@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<br>
+
+{{product.name}}
+{{product.price}}
+
+{% for image in product.images.all %}
+    <img src="{{image.image.url}}" width="100px" height="100px" >
+{% endfor %}
+
+{% for attr in product.values.all %}
+    {{attr.value}}
+{% endfor %}
+
+{% include 'footer.html' %}
+
+{% endblock %}

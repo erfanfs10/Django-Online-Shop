@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <head>
+  
+    <link rel="stylesheet" href="{% static 'product.css' %}" >
+
+    
+    <!-- Custom styles for this template -->
+    <link href="product.css" rel="stylesheet">
+  </head>
+  <body>
+    
+  {% include 'navbar.html' %}
+
+  <br>
+  <br>
+  <br> 
+  
+  <div class="album py-4 bg-light">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+
+       {% for component in components %} 
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <a href="{% url 'component' component.name %}"><img src="{{component.image.url}}" width="288px" height="300px" ></a>
+            <div class="card-body">
+              <p class="card-text">{{component.name}}</p>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+
+<br>
+<br>
+<br> 
+
+  {% include 'footer.html' %}
+
+
+    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+      
+  </body>
+
+{% endblock %}

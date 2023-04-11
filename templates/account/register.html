@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+{{errors}}
+
+    <div class="w-auto p-5">
+        <form method="post" action="{% url 'register' %}" >
+
+            {% csrf_token %}
+            {{form | crispy}}
+
+            <button type="submit" >register</button>
+
+        </form>
+    </div>
+
+{% include 'footer.html' %}
+{% endblock %}
