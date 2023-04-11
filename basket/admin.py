@@ -1,3 +1,12 @@
 from django.contrib import admin
+from .models import Basket, BasketLine
 
-# Register your models here.
+
+@admin.register(Basket)
+class BasketAdmin(admin.ModelAdmin):
+    list_display = ("user", "created")
+
+
+@admin.register(BasketLine)
+class BasketInlineAdmin(admin.ModelAdmin):
+    list_display = ("basket", "product", "quantity")    

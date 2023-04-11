@@ -5,7 +5,9 @@ from .models import CustomUser
 
 @register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "phone_number", "date_joined", "is_active")
+    list_display = ("email", "name", "phone_number", "date_joined", "is_active")
     list_filter = ("is_active",)
     list_editable = ("is_active",)
+    
+    
 
