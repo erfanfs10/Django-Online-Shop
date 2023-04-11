@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% include 'navbar.html' %}
+    <br>
+    {% for item in basket_line %}
+        {{item}}
+    {% empty %}
+        <h6>your basket is empty</h6>
+    {% endfor %}
+
+{% endblock %}
