@@ -4,7 +4,7 @@ from .models import Basket, BasketLine
 
 @admin.register(Basket)
 class BasketAdmin(admin.ModelAdmin):
-    list_display = ("user", "created")
+    list_display = ('id', "user", "created")
 
 
 @admin.register(BasketLine)

@@ -13,28 +13,14 @@ class Basket(models.Model):
         return str(self.user)
     
     @classmethod
-    def get_basket(cls, request):
+    def get_basket(cls, user):
 
-        if request.user.is_authenticated:
             try:
-                basket = cls.objects.prefetch_related("basket_line").get(user=request.user)
+                basket = cls.objects.prefetch_related("basket_line").get(user=user)
             except cls.DoesNotExist:
-                basket = cls.objects.create(user=request.user)
+                basket = cls.objects.create(user=user)
             return basket 
-
-        else:
-            try:
-                basket_id = request.COOKIES.get("basket_id", None)
-                basket = cls.objects.prefetch_related("basket_line").get(pk=basket_id)
-
-            except cls.DoesNotExist :    
-               
-                response = HttpResponseRedirect(reverse("basket-view"))
-                basket = cls.objects.create()
-                response.set_cookie("basket_id", basket.id)
-                
-            return basket
-        
+  
 
 class BasketLine(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name="basket_line")
