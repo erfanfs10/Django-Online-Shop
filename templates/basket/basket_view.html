@@ -2,12 +2,27 @@
 
 
 {% block content %}
+
     {% include 'navbar.html' %}
-    <br>
-    {% for item in basket_line %}
-        {{item}}
-    {% empty %}
-        <h6>your basket is empty</h6>
-    {% endfor %}
+    <div class="container" >
+    <div class="list-group w-auto">
+        {% for line in basket_line %}
+        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+          <img src="{{line.product.images.first.image.url}}" alt="twbs" width="100" height="100" >
+          <div class="d-flex gap-2 w-100 justify-content-between">
+            <div>
+              <h6 class="mb-0">{{line.product.name}}</h6>
+              <p class="mb-0 opacity-75">{{line.product.description}}</p>
+            </div>
+            <small class="text">{{line.product.price}}$</small>
+          </div>
+        </a>
+        {% empty %}
+            <h3> You Have No Product In Your Basket </h3>
+        {% endfor %}
+        <h3>Total Price : {{ total.total | floatformat:2 }}$</h3>
+    <div>
+    </div>        
+    {% include 'footer.html' %}
 
 {% endblock %}

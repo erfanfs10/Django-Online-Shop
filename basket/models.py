@@ -13,13 +13,25 @@ class Basket(models.Model):
         return str(self.user)
     
     @classmethod
-    def get_basket(cls, user):
+    def get_basket(cls, request):
 
+        if request.user.is_authenticated:
             try:
-                basket = cls.objects.prefetch_related("basket_line").get(user=user)
+                basket = cls.objects.prefetch_related("basket_line").select_related("user").get(user=request.user)
             except cls.DoesNotExist:
-                basket = cls.objects.create(user=user)
-            return basket 
+                basket = cls.objects.create(user=request.user)
+        
+        else:
+            try:
+                basket_id = request.session.get("basket_id", None) # search user session for basket_id cookie
+                basket = cls.objects.prefetch_related("basket_line").get(pk=basket_id)
+            
+            except cls.DoesNotExist : 
+                basket = cls.objects.create() 
+                request.session["basket_id"] = basket.id  # set basket_id as a cookie for user session
+                request.session.set_expiry(60)
+
+        return basket
   
 
 class BasketLine(models.Model):
