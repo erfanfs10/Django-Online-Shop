@@ -9,4 +9,4 @@ class BasketAdmin(admin.ModelAdmin):
 
 @admin.register(BasketLine)
 class BasketInlineAdmin(admin.ModelAdmin):
-    list_display = ("basket", "product", "quantity")    
+    list_display = ("id","basket", "product", "quantity")    

@@ -6,5 +6,5 @@ urlpatterns = [
 
     path("view/", basket_view, name='basket-view'),
     path("add/<int:product_id>/", basket_add, name='basket-add'),
-    path("delete/<int:product>/", basket_delete, name='basket-delete')
+    path("delete/<int:product_id>/", basket_delete, name='basket-delete')
 ]

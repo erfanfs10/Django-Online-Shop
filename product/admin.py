@@ -34,7 +34,7 @@ class ProductTypeAdmin(admin.ModelAdmin):
 
 @register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'status',
+    list_display = ("id",'name', 'price', 'status',
                      'brand', 'product_type', 'category')
 
                      

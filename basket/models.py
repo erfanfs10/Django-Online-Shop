@@ -13,11 +13,11 @@ class Basket(models.Model):
         return str(self.user)
     
     @classmethod
-    def get_basket(cls, request):
+    def get_basket(cls, request):  # this method allways returns a basket 
 
         if request.user.is_authenticated:
             try:
-                basket = cls.objects.prefetch_related("basket_line").select_related("user").get(user=request.user)
+                basket = cls.objects.prefetch_related("basket_line").get(user=request.user)
             except cls.DoesNotExist:
                 basket = cls.objects.create(user=request.user)
         
@@ -29,10 +29,29 @@ class Basket(models.Model):
             except cls.DoesNotExist : 
                 basket = cls.objects.create() 
                 request.session["basket_id"] = basket.id  # set basket_id as a cookie for user session
-                request.session.set_expiry(60)
 
         return basket
-  
+    
+    @classmethod  
+    def get_total_price(cls, basket_line):   # calculate The total Price 
+        total = 0
+        for line in basket_line:   
+            total += line.product.price * line.quantity
+        return total    
+
+    def add_to_basket(self, product_id):
+
+        if self.basket_line.filter(product = product_id).exists():
+            basket_line = self.basket_line.filter(product = product_id).first()
+            basket_line.quantity += 1
+            basket_line.save()
+
+        else:
+            product = Product.objects.get(pk = product_id)
+            basket_line = self.basket_line.create(product = product)    
+
+        return basket_line
+
 
 class BasketLine(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name="basket_line")

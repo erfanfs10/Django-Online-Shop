@@ -1,34 +1,28 @@
 from django.shortcuts import render
-from django.urls import reverse
 from django.http import HttpResponse
 from .models import Basket
 from django.shortcuts import redirect
 from product.models import Product
-from django.db.models import Sum
 
 
 def basket_view(request):
    
-    basket = Basket.get_basket(request)  # this method returns allways a basket   
-    basket_line = basket.basket_line.all()
-    total = basket_line.aggregate(total=Sum("product__price"))
-    print(total["total"])
-    return render(request, "basket/basket_view.html", {"basket_line": basket_line, "total": total})
+    basket = Basket.get_basket(request)  # this method allways returns a basket   
+    basket_line = basket.basket_line.select_related("product").all()
+    total = Basket.get_total_price(basket_line)  # calculate The total Price
+    context = {"basket_line": basket_line, "total": total}
+
+    return render(request, "basket/basket_view.html", context)
 
 
 def basket_add(request, product_id):
 
     basket = Basket.get_basket(request)
-    if basket.basket_line.filter(product = product_id).exists():
-        basket_line = basket.basket_line.filter(product = product_id).first()
-        basket_line.quantity += 1
-        basket_line.save()
-
-    else:
-        product = Product.objects.get(pk = product_id)
-        basket_line = basket.basket_line.create(product = product)    
-    return redirect('basket-view')
+    basket_line = basket.add_to_basket(product_id) # gets a product id and add it to basket_line model
+      
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def basket_delete(request, product_id):
+
     return HttpResponse(product_id)

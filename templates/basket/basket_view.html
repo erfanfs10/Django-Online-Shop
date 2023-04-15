@@ -5,23 +5,33 @@
 
     {% include 'navbar.html' %}
     <div class="container" >
-    <div class="list-group w-auto">
         {% for line in basket_line %}
-        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-          <img src="{{line.product.images.first.image.url}}" alt="twbs" width="100" height="100" >
-          <div class="d-flex gap-2 w-100 justify-content-between">
-            <div>
-              <h6 class="mb-0">{{line.product.name}}</h6>
-              <p class="mb-0 opacity-75">{{line.product.description}}</p>
-            </div>
-            <small class="text">{{line.product.price}}$</small>
-          </div>
-        </a>
+
+        <div style = "display: inline-block; justify-content : center ;
+        justify-content : space-between ; margin-left: 80px;">
+       
+            <img src="{{line.product.images.first.image.url}}" alt="twbs" width="100" height="100" >
+            <h6 class="mb-0">{{line.product.name}}</h6>
+            <p class="mb-0 opacity-75">{{line.product.description}}</p>
+               
+            <h5>{{line.product.price}}$</h5>
+            <h6>quantity: {{line.quantity}}</h6>
+            <h4><a class="btn btn-danger" href="{% url 'basket-delete' line.product.id %}">delete</a></h4>  
+
+        </div>         
+           
+        
         {% empty %}
             <h3> You Have No Product In Your Basket </h3>
         {% endfor %}
-        <h3>Total Price : {{ total.total | floatformat:2 }}$</h3>
-    <div>
+        <br>
+        <br>
+        <br>
+
+        {% if total %}
+        <h4>Total Price : {{ total | floatformat:2 }}$</h4>
+        {% endif %}
+
     </div>        
     {% include 'footer.html' %}
 
