@@ -1,9 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from .models import ProductType, Product
-from django.shortcuts import get_object_or_404
-from django.http import Http404
-from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class ComponentList(ListView):
     template_name = 'product/components_list.html'
@@ -20,14 +18,6 @@ class Component(ListView):
         return context      
     
 
-class ProductDetail(DetailView):
-    template_name = "product/product_detail.html"
-    context_object_name = "product"
-
-    def get_object(self):
-        try:
-            obj = Product.objects.filter(pk=self.kwargs["pk"]).prefetch_related("images", "values").first()
-        except Product.DoesNotExist:
-            return Http404    
-        print(obj)
-        return obj
+def product_detail(request, product_id):
+    product = Product.objects.filter(pk=product_id).prefetch_related("images", "values", "values__attribute").first()
+    return render(request, "product/product_detail.html", {"product": product})

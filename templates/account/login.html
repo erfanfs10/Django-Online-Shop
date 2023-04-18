@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="w-auto p-5">
 
     {% if messages %}
     {% for message in messages %}
@@ -35,7 +35,7 @@
       <label for="floatingPassword">Password</label>
     </div>
 
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+    <button class="w-100 btn btn-lg btn-success" type="submit">Login</button>
    
   </form>
 </main>  
@@ -47,6 +47,8 @@
 
   </body>
 </div>
+<a class="btn btn-primary" href="{% url 'home'  %}">Back To Home</a>
+
 
 
 {% endblock %}

@@ -3,17 +3,17 @@
 
 
 {% block content %}
-
     <div class="w-auto p-5">
         <form method="post" action="{% url 'register' %}" >
 
             {% csrf_token %}
             {{form | crispy}}
 
-            <button type="submit" >register</button>
+            <button type="submit" class="btn btn-success">Register</button>
 
         </form>
     </div>
+    <a class="btn btn-primary" href="{% url 'home'  %}">Back To Home</a>
 
 {% include 'footer.html' %}
 {% endblock %}

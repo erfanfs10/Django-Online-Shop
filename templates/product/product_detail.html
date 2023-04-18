@@ -4,15 +4,16 @@
 {% include 'navbar.html' %}
 <br>
 
-{{product.name}}
-{{product.price}}
+<h5>{{product.name}}</h5>
+<h5>{{product.price}}$</h5>
 
 {% for image in product.images.all %}
     <img src="{{image.image.url}}" width="100px" height="100px" >
 {% endfor %}
 
 {% for attr in product.values.all %}
-    {{attr.value}}
+<h5>{{attr.attribute}}: {{attr.value}}</h5>
+
 {% endfor %}
 
 {% include 'footer.html' %}

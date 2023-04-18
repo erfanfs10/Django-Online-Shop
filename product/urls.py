@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from .views import ComponentList, Component, ProductDetail
+from .views import ComponentList, Component, product_detail
 
 
 urlpatterns = [
@@ -9,7 +9,7 @@ urlpatterns = [
     path('products/', TemplateView.as_view(template_name='product/products.html'), name='products'),
     path('products/components_list/', ComponentList.as_view(), name='components-list'),
     path('products/components_list/<str:component>', Component.as_view(), name='component'),
-    path('product/<int:pk>/', ProductDetail.as_view(), name='product-detail')
+    path('product/<int:product_id>/', product_detail, name='product-detail')
     #path('products/gaming/', name='gaming')
     #path('products/networking/', name='networking')
     #path('products/laptop/', name='laptop')

@@ -1,6 +1,4 @@
 from django.db import models
-from django.urls import reverse
-from django.http import HttpResponseRedirect
 from account.models import CustomUser
 from product.models import Product
 
@@ -32,12 +30,14 @@ class Basket(models.Model):
 
         return basket
     
+
     @classmethod  
     def get_total_price(cls, basket_line):   # calculate The total Price 
         total = 0
         for line in basket_line:   
             total += line.product.price * line.quantity
         return total    
+
 
     def add_to_basket(self, product_id):
 
@@ -50,7 +50,13 @@ class Basket(models.Model):
             product = Product.objects.get(pk = product_id)
             basket_line = self.basket_line.create(product = product)    
 
-        return basket_line
+
+    def delete_from_basket(self, product_id):
+
+        basket_line = self.basket_line.all()
+        for line in basket_line:
+            if line.product.id == product_id:
+                line.delete()
 
 
 class BasketLine(models.Model):
