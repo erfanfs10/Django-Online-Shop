@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+{% include 'navbar.html' %}
+<div class="container" >
+<form method="post" action="{% url 'address-add' %}">
+
+    {% csrf_token %}
+    {{form | crispy}}
+    <button type="submit" class="btn btn-success">Add Address</button>
+
+
+</form>
+
+
+<br>
+<a class="btn btn-primary" href="{% url 'address-view'  %}">Back To Your Addresses</a>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+{% include 'footer.html' %}
+{% endblock %}

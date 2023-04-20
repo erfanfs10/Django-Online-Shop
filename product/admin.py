@@ -45,7 +45,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @register(Rating)
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('product', 'point', 'user', 'created')
+    list_display = ("title","body",'product', 'point', 'user', 'created')
 
 admin.site.register(Category)
 admin.site.register(Brand)

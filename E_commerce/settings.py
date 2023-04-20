@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "basket",
     "order",
     "payment",
+    "shipping",
 
 
     'rest_framework',

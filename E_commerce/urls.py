@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('product.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
     path('account/', include("account.urls")),
-    path('basket/', include("basket.urls"))
+    path('basket/', include("basket.urls")),
+    path('shipping/', include("shipping.urls"))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
