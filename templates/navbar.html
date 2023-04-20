@@ -51,9 +51,9 @@
         <ul class="dropdown-menu text-small">
           <li><h6>Welcome {{user.name}}</h6></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Your Rating</a></li>
+          <li><a class="dropdown-item" href="{% url 'profile' %}">Your Profile</a></li>
           <li><a class="dropdown-item" href="{% url 'address-view' %}">Your Address</a></li>
-          <li><a class="dropdown-item" href="#">Your Profile</a></li>
+          <li><a class="dropdown-item" href="#">Your Rating</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
         </ul>

@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import redirect
 from django.contrib import messages
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ProfileForm
+from django.contrib.auth.decorators import login_required
 
 
 def login_view(request):
@@ -51,3 +52,21 @@ def register_view(request):
         return render(request, "account/register.html", {"form": form})
     
     return render(request, "account/register.html", context)
+
+
+@login_required
+def profile(request):
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        form = ProfileForm(request.POST, instance=request.user)
+
+    else:
+        form = ProfileForm(instance=request.user)
+        return render(request, "account/profile.html", {"form": form}) 
+
+    return render(request, "account/profile.html", {"form": form}) 
+       
