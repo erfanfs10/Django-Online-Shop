@@ -17,7 +17,7 @@ def basket_add(request, product_id):
     basket = Basket.get_basket(request)
     basket.add_to_basket(product_id) # gets a product id and add it to BasketLine Model
       
-    return redirect(request.META.get('HTTP_REFERER'))
+    return redirect(request.META.get('HTTP_REFERER')) #redirect to the same page
 
 
 def basket_delete(request, product_id):
@@ -25,4 +25,4 @@ def basket_delete(request, product_id):
     basket = Basket.get_basket(request)
     basket.delete_from_basket(product_id) # gets a product id and delete it from BasketLine Model
     
-    return redirect(request.META.get('HTTP_REFERER'))
+    return redirect(request.META.get('HTTP_REFERER')) #redirect to the same page

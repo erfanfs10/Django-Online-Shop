@@ -4,8 +4,8 @@
 {% include 'navbar.html' %}
 <br>
 
-<h5>{{product.name}}</h5>
-<h5>{{product.price}}$</h5>
+<h5>Product Name: {{product.name}}</h5>
+<h5>Price: {{product.price}}$</h5>
 
 {% for image in product.images.all %}
     <img src="{{image.image.url}}" width="100px" height="100px" >
@@ -15,6 +15,7 @@
 <h5>{{attr.attribute}}: {{attr.value}}</h5>
 
 {% endfor %}
+<a class="btn btn-primary" href="{% url 'basket-add' product.id %}" > Add to Basket </a>
 
 {% include 'footer.html' %}
 

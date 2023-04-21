@@ -4,24 +4,30 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from .forms import CustomUserCreationForm, ProfileForm
 from django.contrib.auth.decorators import login_required
+from django.views import View
+from django.contrib.auth.forms import AuthenticationForm
 
 
-def login_view(request):
-
-    if request.method == 'POST':
-
-        email = request.POST["email"]
-        password = request.POST["password"]
-        user = authenticate(request, email=email, password=password)
-        if user:
-            login(request, user)
-            return redirect("home")
-        msg = 'Please enter a correct email and password. Note that both fields may be case-sensitive.' 
-        messages.warning(request, msg)
-        return redirect('login')  
+class LoginView(View):
+    template_name = "account/login.html"
+    form_class = AuthenticationForm
     
-    else:     
-       return render(request, 'account/login.html')
+    def get(self, request, *args, **kwargs):
+        form = AuthenticationForm()
+        return render(request, self.template_name, {"form": form})
+    
+    def post(self, request, *args, **kwargs):
+
+        form = self.form_class(request, data=request.POST)
+        next = request.POST["next"]
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            if next:
+                return redirect(next)
+            return redirect("home")
+    
+        return render(request, self.template_name, {"form": form})
 
 
 def logout_view(request):

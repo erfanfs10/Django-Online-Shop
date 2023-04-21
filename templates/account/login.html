@@ -1,54 +1,32 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-<div class="w-auto p-5">
-
-    {% if messages %}
-    {% for message in messages %}
-
-      <div class="alert alert-danger" role="alert">
-        <strong>{{message}}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-
-    {% endfor %}
-    {% endif %}
-
-
-
-    <body class="text-center"> 
+<div class="container" >
+  <br>
 {% if not user.is_authenticated %}   
-    <main class="form-signin w-100 m-auto">
-  <form method="post" action="{% url 'login' %}" >
-    {% csrf_token %}
-    <h1 class="h3 mb-3 fw-normal">Please Login</h1>
-
-    <div class="form-floating">
-      <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
-    </div>
-    <div class="form-floating">
-      <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">Password</label>
-    </div>
-
-    <button class="w-100 btn btn-lg btn-success" type="submit">Login</button>
    
+  <form method="post" action="{% url 'login' %}" >
+
+    {% csrf_token %}
+    {{form | crispy}}
+    <input type="hidden" name="next" value="{{request.GET.next}}" >
+    <button class="w-100 btn btn-lg btn-success" type="submit">Login</button>
+
   </form>
-</main>  
+
 {% else %}
     <h4>Yoy Have Already Logged in Do You Want To <a href="{% url 'logout'%}" >Logout?</a></h4>
 {% endif %}
+<br>
+<h5>don't have an account?<a href="{% url 'register'%}" >register</a></h5>
+<br>
 
-
-
-  </body>
-</div>
 <a class="btn btn-primary" href="{% url 'home'  %}">Back To Home</a>
 
-
-
+</div>
+{% include 'footer.html' %}
 {% endblock %}
