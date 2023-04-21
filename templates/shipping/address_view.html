@@ -4,26 +4,26 @@
 {% include 'navbar.html' %}
 
 <div class="container" >
-<a class="btn btn-success" href="{% url 'address-add'  %}">Add New Address</a>
+<a class="btn btn-success" href="{% url 'address-add'  %}">Add New Address +</a>
 <br>
 <br>
 <br>
-<br>
+
 {% for address in addresses %}
 
     <h5>City: {{address.city}}</h5>
     <h5>Zipcode: {{address.zipcode}}</h5>
     <h5>Address: {{address.address}}</h5>
     <a class="btn btn-danger" href="{% url 'address-delete' address.id %}">Delete Address</a>
-
-
+    <a class="btn btn-primary" href="{% url 'address-update' address.id %}">Update Address</a>
+    <br>
+    <br>
 
 {% empty %}
     <h5>You Have No Address <a href="{% url 'address-add' %}" >Add One</a></h5>
 {% endfor %}
+
 </div>
-<br>
-<br>
 <br>
 <br>
 <a class="btn btn-primary" href="{% url 'home'  %}">Back To Home</a>

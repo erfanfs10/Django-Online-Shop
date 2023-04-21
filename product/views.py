@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import ProductType, Product
 
 
@@ -20,4 +20,6 @@ class Component(ListView):
 
 def product_detail(request, product_id):
     product = Product.objects.filter(pk=product_id).prefetch_related("images", "values", "values__attribute").first()
+    product.view += 1
+    product.save()
     return render(request, "product/product_detail.html", {"product": product})

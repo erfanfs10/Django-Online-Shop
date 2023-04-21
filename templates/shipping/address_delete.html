@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container" >
+<form method="post">{% csrf_token %}
+    <h5>Are you sure you want to delete "{{ object }}"?</h5>
+    {{ form | crispy}}
+    <button type="submit" class="btn btn-danger">Delete Address</button>
+</form>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

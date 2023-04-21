@@ -1,36 +1,47 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DeleteView, UpdateView
+from django.views import View
 from .models import Address
 from .forms import AddressForm
-from django.contrib.auth.decorators import login_required
 
 
-def address_view(request):
+class AddressView(ListView):
+    template_name = "shipping/address_view.html"
+    context_object_name = "addresses"
 
-    addresses = Address.objects.filter(user=request.user)
+    def get_queryset(self):
+        addresses = Address.objects.filter(user=self.request.user)
+        return addresses
 
-    return render(request, "shipping/address_view.html", {"addresses": addresses})
 
+class AddressAdd(LoginRequiredMixin, View):
+    template_name = "shipping/address_add.html"
+    form_class = AddressForm
 
-@login_required()
-def address_add(request):
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {"form": form})
 
-    if request.method == "POST":
-        form = AddressForm(request.POST)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = request.user
             instance.save()
             return redirect('address-view')
-
-    form = AddressForm()
-
-    return render(request, "shipping/address_add.html", {"form": form})        
+        return render(request, self.template_name, {"form": form})
 
 
-@login_required
-def address_delete(request, pk):
+class AddressUpdate(LoginRequiredMixin, UpdateView):
+    model = Address
+    fields = ("city", "zipcode", "address")
+    template_name_suffix = "_update"
+    success_url = reverse_lazy("address-view")
 
-    address = get_object_or_404(Address, pk=pk)
-    address.delete()
 
-    return redirect("address-view")
+class AddressDelete(LoginRequiredMixin, DeleteView):
+    model = Address
+    template_name_suffix = "_delete"
+    success_url = reverse_lazy("address-view")
