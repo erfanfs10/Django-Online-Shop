@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DeleteView, UpdateView
+from django.views.generic import ListView, DeleteView, UpdateView, CreateView
 from django.views import View
 from .models import Address
 from .forms import AddressForm
@@ -32,6 +32,17 @@ class AddressAdd(LoginRequiredMixin, View):
             instance.save()
             return redirect('address-view')
         return render(request, self.template_name, {"form": form})
+
+
+class AddressCreate(LoginRequiredMixin, CreateView):
+    model = Address
+    fields = ("city", "zipcode", "address")
+    template_name_suffix = "_add"
+    success_url = reverse_lazy("address-view")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class AddressUpdate(LoginRequiredMixin, UpdateView):

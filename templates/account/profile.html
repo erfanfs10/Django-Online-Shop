@@ -5,6 +5,9 @@
 {% block content %}
 {% include 'navbar.html' %}
 
+<div class="container" >
+    <a class="btn btn-danger" href="{% url 'change-password'  %}">Change Password</a>
+
     <div class="w-auto p-5">
         <form method="post" action="{% url 'profile' %}" >
 
@@ -15,7 +18,8 @@
 
         </form>
     </div>
-    <a class="btn btn-primary" href="{% url 'home'  %}">Back To Home</a>
 
+    <a class="btn btn-primary" href="{% url 'home'  %}">Back To Home</a>
+</div>
 {% include 'footer.html' %}
 {% endblock %}

@@ -1,16 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
-
-  <head>
-  
-    <link rel="stylesheet" href="{% static 'product.css' %}" >
-
-    
-    <!-- Custom styles for this template -->
-    <link href="product.css" rel="stylesheet">
-  </head>
-  <body>
     
     {% include 'navbar.html' %}
     
@@ -28,11 +19,5 @@
 </main>
 
   {% include 'footer.html' %}
-
-
-    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-
-      
-  </body>
 
 {% endblock %}

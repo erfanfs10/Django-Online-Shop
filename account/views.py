@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
-from .forms import CustomUserCreationForm, ProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from .forms import CustomUserCreationForm, ProfileForm
 
 
 class LoginView(View):
@@ -21,6 +21,7 @@ class LoginView(View):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+           
             if next:
                 return redirect(next)
             return redirect("home")
@@ -68,4 +69,25 @@ class ProfileView(LoginRequiredMixin, View):
             return redirect('home')
         form = ProfileForm(request.POST, instance=request.user)
         return render(request, "account/profile.html", {"form": form}) 
+    
+
+class PasswordChangeView(View):
+    template_name = "account/changepass.html"
+    form_class = PasswordChangeForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(request.user)
+        return render(request, self.template_name, {"form": form})
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.user, request.POST)
+        print(form)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        print("dajhfbhajfjrg847857")
+        return render(request, self.template_name, {"form": form})
+
+
+
     
