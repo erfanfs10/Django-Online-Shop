@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import Http404
 from .models import Basket
 
 
@@ -15,14 +16,24 @@ def basket_view(request):
 def basket_add(request, product_id):
 
     basket = Basket.get_basket(request)
-    basket.add_to_basket(product_id) # gets a product id and add it to BasketLine Model
-      
-    return redirect(request.META.get('HTTP_REFERER')) #redirect to the same page
+    basket_line = basket.add_to_basket(product_id)
+    if basket_line == False: # gets a product id and add it to BasketLine Model
+        raise Http404
+    
+    http_referer = request.META.get('HTTP_REFERER')
+    if http_referer is not None:
+        return redirect(request.META.get('HTTP_REFERER')) #redirect to the same page
+    return redirect('basket-view')
 
 
 def basket_delete(request, product_id):
 
     basket = Basket.get_basket(request)
-    basket.delete_from_basket(product_id) # gets a product id and delete it from BasketLine Model
+    baslet_line = basket.delete_from_basket(product_id) # gets a product id and delete it from BasketLine Model
+    if baslet_line == False:
+        raise Http404("SOMETHING WRONG IS HAPPEND")
     
-    return redirect(request.META.get('HTTP_REFERER')) #redirect to the same page
+    http_referer = request.META.get('HTTP_REFERER')
+    if http_referer is not None:
+        return redirect(request.META.get('HTTP_REFERER')) #redirect to the same page
+    return redirect('basket-view')

@@ -8,7 +8,7 @@ class Basket(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.user)
+        return f"{self.user} Basket"
     
     @classmethod
     def get_basket(cls, request):  # this method allways returns a basket 
@@ -39,24 +39,28 @@ class Basket(models.Model):
         return total    
 
 
-    def add_to_basket(self, product_id):
+    def add_to_basket(self, product_id): #gets a product id and add it to the user BasketLine model
 
-        if self.basket_line.filter(product = product_id).exists():
+        if self.basket_line.filter(product=product_id).exists():
             basket_line = self.basket_line.filter(product = product_id).first()
             basket_line.quantity += 1
             basket_line.save()
 
         else:
-            product = Product.objects.get(pk = product_id)
-            basket_line = self.basket_line.create(product = product)    
+            try:
+                product = Product.objects.get(pk = product_id)
+                basket_line = self.basket_line.create(product = product)   
+            except Product.DoesNotExist:
+                return False
+         
 
+    def delete_from_basket(self, product_id): #gets a product id and delete it to the user BasketLine model
 
-    def delete_from_basket(self, product_id):
-
-        basket_line = self.basket_line.all()
-        for line in basket_line:
-            if line.product.id == product_id:
-                line.delete()
+        try:
+            product = self.basket_line.get(product=product_id)
+        except BasketLine.DoesNotExist:  
+            return False
+        product.delete()
 
 
 class BasketLine(models.Model):

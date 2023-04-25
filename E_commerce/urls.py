@@ -12,4 +12,7 @@ urlpatterns = [
     path('basket/', include("basket.urls")),
     path('shipping/', include("shipping.urls"))
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+] 
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
