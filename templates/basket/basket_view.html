@@ -31,6 +31,10 @@
         {% if total %}
         <h4>Total Price : {{ total | floatformat:2 }}$</h4>
         {% endif %}
+        {% if basket_line %}
+            <h4><a class="btn btn-success" href="{% url 'order-view'  %}">Order Now!</a></h4>  
+        {% endif %}
+
 
     </div>        
     {% include 'footer.html' %}
