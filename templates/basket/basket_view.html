@@ -16,7 +16,7 @@
                
             <h5>{{line.product.price}}$</h5>
             <h6>quantity: {{line.quantity}}</h6>
-            <h4><a class="btn btn-danger" href="{% url 'basket-delete' line.product.id %}">delete</a></h4>  
+            <h4><a class="btn btn-danger" href="{% url 'basket-delete' line.product.id %}">Delete</a></h4>  
 
         </div>         
            
@@ -32,7 +32,7 @@
         <h4>Total Price : {{ total | floatformat:2 }}$</h4>
         {% endif %}
         {% if basket_line %}
-            <h4><a class="btn btn-success" href="{% url 'order-view'  %}">Order Now!</a></h4>  
+            <h4><a class="btn btn-success" href="{% url 'order-add'  %}">Order Now!</a></h4>  
         {% endif %}
 
 

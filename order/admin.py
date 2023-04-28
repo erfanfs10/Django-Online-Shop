@@ -9,7 +9,7 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("user", "address", "amount", "shipping_price", "status")
+    list_display = ("user", "id", "address", "amount", "shipping_price", "status")
     list_filter = ("status",)
     list_editable = ("status",)
     inlines = (OrderItemInline,)

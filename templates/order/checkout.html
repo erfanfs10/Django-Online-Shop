@@ -9,7 +9,7 @@
     <div class="col-md-5 col-lg-4 order-md-last">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-primary">Your cart</span>
-        <span class="badge bg-primary rounded-pill">{{total}}</span>
+        <span class="badge bg-primary rounded-pill">{{total_item}}</span>
       </h4>
       <ul class="list-group mb-3">
 
@@ -31,21 +31,40 @@
       </ul>
 
       <form class="card p-2">
+    
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Promo code">
           <button type="submit" class="btn btn-secondary">Redeem</button>
         </div>
       </form>
+      <br>
+      <h4><a class="btn btn-danger" href="{% url 'order-delete'%}">Delete Order</a></h4>  
+
     </div>
-    <div class="col-md-7 col-lg-8">
 
-      <form method="post" accept="{% url 'checkout' %}" >
-        {{form | crispy}}
-        <button type="submit" class="btn btn-success">Payment</button>
+    <div class="col-md-5">
+      <label for="country" class="form-label">Address</label>
 
-      </form>
+      {% if addresses %}
+        <form method="post" action="{% url 'checkout' %}" >
+          {% csrf_token %}
+          <select class="form-select" name="address" required>
+            <option value="">Choose...</option>
+              {% for address in addresses %}
+                <option value="{{address.id}}" >{{address}}</option>
+              {% endfor %}
+          </select>
+          <br>
+          <br>
+          <br>
+          <button type="submit" class="btn btn-success">Payment</button>
+        </form>
+      {% else %}
+        <h4><a class="btn btn-success" href="{% url 'address-add' %}">Add Address +</a></h4>  
+      {% endif %}
+      
 
-    </div>    
+    </div>
 
 </div>
 

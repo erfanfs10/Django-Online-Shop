@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<h4> You have Nothing In Your Basket! <a href="{% url 'products' %}"> Take a Tour Now! </a> </h4>
+
+{% include 'footer.html' %}
+{% endblock %}

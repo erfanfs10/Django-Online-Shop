@@ -28,6 +28,12 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user} order with {self.amount} $"
 
+    @classmethod
+    def get_total_price(self, order_item):
+        total_price = 0
+        for item in order_item:
+            total_price += item.product.price * item.quantity
+        return total_price
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_item')
