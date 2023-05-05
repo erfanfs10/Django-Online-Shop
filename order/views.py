@@ -38,20 +38,21 @@ def order_delete(request):
 
 class Checkout(LoginRequiredMixin, View):
     template_name = "order/checkout.html"
-    form_class = AddressForm
 
     def get(self, request):
+
         if Order.objects.filter(user=request.user, status="WP").exists():
             order = Order.objects.filter(user=request.user, status="WP").first()
         else:
             return render(request, "order/no_order.html")
+        
         order_item = order.order_item.select_related("product").all() 
         total_price = Order.get_total_price(order_item)
-        
         total_item = order_item.count()
         addresses = Address.objects.filter(user=request.user)
         context = {"order_item": order_item, "addresses": addresses,
-                    "form":self.form_class, "total_item": total_item, "total_price": total_price}
+                   "total_item": total_item, "total_price": total_price}
+        
         return render(request, self.template_name, context)
 
     def post(self, request):
