@@ -1,6 +1,14 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from .models import ProductType, Product
+
+
+def products(request):
+    q = request.GET.get('q', None)
+    if q is None:
+        return render(request, "product/products.html")
+    products = Product.objects.filter(name__icontains=q)
+    return render(request, "product/product_search.html", {"products": products})
 
 
 class ComponentList(ListView):
@@ -19,7 +27,9 @@ class Component(ListView):
     
 
 def product_detail(request, product_id):
+   
     product = Product.objects.filter(pk=product_id).prefetch_related("images", "values", "values__attribute").first()
     product.view += 1
     product.save()
     return render(request, "product/product_detail.html", {"product": product})
+    

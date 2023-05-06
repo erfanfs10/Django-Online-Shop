@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block content %}
 {% include 'navbar.html' %}
@@ -7,12 +6,12 @@
 <div class="album py-4 bg-light">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-
+  
         {% for product in products %}
-
+  
         <div class="col">
           <div class="card shadow-sm">
-            <a href="{% url 'product-detail' product.pk %}" ><img width="280px" height="280px" src="{{product.images.first.image.url}}" ></a>
+            <a href="{% url 'product-detail' product.pk %}" ><img width="298px" height="300px" src="{{product.images.first.image.url}}" ></a>
             <div class="card-body">
               <p class="card-text">{{product.name}}</p>
               <div class="d-flex justify-content-between align-items-center">
@@ -24,18 +23,13 @@
             </div>
           </div>
         </div>
-
+        {% empty %}
+          <h4> There is no product whit that name </h4>
         {% endfor %} 
-
+  
       </div>
     </div>
   </div>
 
 {% include 'footer.html' %}
-{% endblock %}
-
-
-
-
-
-
+{% endblock %}  

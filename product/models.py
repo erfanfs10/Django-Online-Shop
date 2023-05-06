@@ -97,7 +97,7 @@ class ProductImage(models.Model):
     def save(self, *args, **kwargs): # reduce product images size using pillow
         super(*args, **kwargs).save()
         with Image.open(self.image.path) as img:
-            img.thumbnail((298, 250))
+            img.thumbnail((280, 280))
             img.save(str(self.image.path), format="PNG")
        
 
