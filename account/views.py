@@ -81,11 +81,9 @@ class PasswordChangeView(View):
     
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.user, request.POST)
-        print(form)
         if form.is_valid():
             form.save()
             return redirect('profile')
-        print("dajhfbhajfjrg847857")
         return render(request, self.template_name, {"form": form})
 
 

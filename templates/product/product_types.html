@@ -33,13 +33,13 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
 
-       {% for component in components %} 
+       {% for product_type in product_types %} 
 
         <div class="col">
           <div class="card shadow-sm">
-            <a href="{% url 'component' component.name %}"><img src="{{component.image.url}}" width="288px" height="300px" ></a>
+            <a href="{% url 'products' product_type.name %}"><img src="{{product_type.image.url}}" width="288px" height="300px" ></a>
             <div class="card-body">
-              <p class="card-text">{{component.name}}</p>
+              <p class="card-text">{{product_type.name}}</p>
             </div>
           </div>
         </div>

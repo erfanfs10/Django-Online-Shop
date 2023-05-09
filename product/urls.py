@@ -1,17 +1,25 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from .views import ComponentList, Component, product_detail, products, products_list
+from .views import Categoty, Products, product_detail, search, category_list
 
 
 urlpatterns = [
 
     path('', TemplateView.as_view(template_name='product/home.html'), name='home'),
-    path('products/', products, name='products'),
-    path('products_list/', products_list, name='products-list'),
-    path('products/components_list/', ComponentList.as_view(), name='components-list'),
-    path('products/components_list/<str:component>', Component.as_view(), name='component'),
-    path('product/<int:product_id>/', product_detail, name='product-detail')
-    #path('products/gaming/', name='gaming')
-    #path('products/networking/', name='networking')
-    #path('products/laptop/', name='laptop')
+    
+    # show's when click on products button on navbar
+    path('category_list/', category_list, name='category-list'),
+
+    # show's when click on category, it show's product types of each category
+    path('category_list/<str:pk>/', Categoty.as_view(), name='category'),
+
+    # show's all product on specific product type
+    path('products/<str:pk>', Products.as_view(), name='products'),
+
+    # show's detail of a product
+    path('product/<int:product_id>/', product_detail, name='product-detail'),
+
+    # show's products when you search on navbar
+    path('search/', search, name='search'),
+    
 ]

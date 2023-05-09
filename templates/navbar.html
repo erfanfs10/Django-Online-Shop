@@ -32,14 +32,14 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'products-list' %}" class="nav-link text-black">
+          <a href="{% url 'category-list' %}" class="nav-link text-black">
             <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
             Products
           </a>
         </li>
       </ul>
 
-      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="get" action="{% url 'products' %}">
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="get" action="{% url 'search' %}">
         <input type="search" name="q" class="form-control" placeholder="Search..." aria-label="Search">
       </form>
 
