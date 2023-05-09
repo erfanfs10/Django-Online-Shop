@@ -1,14 +1,18 @@
 from django.shortcuts import render
 from django.views.generic import ListView
+from django.views.decorators.cache import cache_page
 from .models import ProductType, Product
 
 
 def products(request):
     q = request.GET.get('q', None)
-    if q is None:
-        return render(request, "product/products.html")
     products = Product.objects.filter(name__icontains=q)
     return render(request, "product/product_search.html", {"products": products})
+
+
+@cache_page(300)
+def products_list(request):
+     return render(request, "product/products_list.html")
 
 
 class ComponentList(ListView):
