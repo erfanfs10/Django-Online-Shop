@@ -10,7 +10,7 @@ def search(request):
     return render(request, "product/product_search.html", {"products": products})
 
 
-@cache_page(300)
+@cache_page(None)
 def category_list(request):
      return render(request, "product/category_list.html")
 
