@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AddressView, AddressAdd, AddressDelete, AddressUpdate, AddressCreate
+from .views import AddressView, AddressDelete, AddressUpdate, AddressCreate
 
 
 urlpatterns = [

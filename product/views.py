@@ -1,16 +1,20 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_GET
+from django.db.models import Q
 from .models import ProductType, Product
 
 
+@require_GET
 def search(request):
     q = request.GET.get('q', None)
-    products = Product.objects.filter(name__icontains=q)
+    products = Product.objects.filter(Q(name__icontains=q) |
+                                       Q(brand__name__icontains=q) |
+                                         Q(product_type__name__icontains=q))
     return render(request, "product/product_search.html", {"products": products})
 
 
-@cache_page(None)
+@require_GET
 def category_list(request):
      return render(request, "product/category_list.html")
 
@@ -33,6 +37,7 @@ class Products(ListView):
         return context      
     
 
+@require_GET
 def product_detail(request, product_id):
    
     product = Product.objects.filter(pk=product_id).prefetch_related("images", "values", "values__attribute").first()

@@ -1,5 +1,7 @@
 {% load static %}
+{% load cache %}
 
+{% cache None navbar %}
 <svg>
 
   <symbol id="cart" viewBox="0 0 16 16" >
@@ -42,6 +44,7 @@
       <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="get" action="{% url 'search' %}">
         <input type="search" name="q" class="form-control" placeholder="Search..." aria-label="Search">
       </form>
+{% endcache %}
 
       {% if user.is_authenticated %}
 
@@ -73,4 +76,3 @@
 
 </div>
 </nav>
-
