@@ -13,11 +13,17 @@ def basket_view(request):
     return render(request, "basket/basket_view.html", context)
 
 
-def basket_add(request, product_id):
+def basket_add(request):
+
+    product_id = request.POST.get("product_id", None)
+    quantity = request.POST.get("quantity", None)
+    
+    if product_id and quantity is None:
+        raise Http404
 
     basket = Basket.get_basket(request)
-    basket_line = basket.add_to_basket(product_id)
-    if basket_line == False: # gets a product id and add it to BasketLine Model
+    basket_line = basket.add_to_basket(product_id, quantity) # gets a product id and add it to BasketLine Model
+    if basket_line == False: 
         raise Http404
     
     http_referer = request.META.get('HTTP_REFERER')

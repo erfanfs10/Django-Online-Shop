@@ -39,19 +39,20 @@ class Basket(models.Model):
         return total    
 
 
-    def add_to_basket(self, product_id): #gets a product id and add it to the user BasketLine model
+    def add_to_basket(self, product_id, quantity): #gets a product id and add it to the user BasketLine model
 
         if self.basket_line.filter(product=product_id).exists():
             basket_line = self.basket_line.filter(product = product_id).first()
-            basket_line.quantity += 1
+            basket_line.quantity += int(quantity)
             basket_line.save()
 
         else:
             try:
                 product = Product.objects.get(pk = product_id)
-                basket_line = self.basket_line.create(product = product)   
+                basket_line = self.basket_line.create(product = product, quantity = int(quantity))   
             except Product.DoesNotExist:
                 return False
+            return basket_line
          
 
     def delete_from_basket(self, product_id): #gets a product id and delete it to the user BasketLine model

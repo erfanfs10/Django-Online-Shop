@@ -16,8 +16,17 @@
     <h5>{{attr.attribute}}: {{attr.value}}</h5>
 
     {% endfor %}
-    <a class="btn btn-primary" href="{% url 'basket-add' product.id %}" > Add to Basket </a>
+    <form method="post" action="{% url 'basket-add'%}">
+        {% csrf_token %}
+        <label for="number">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1" max="10" value="1">
+        <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
 
+        <br>
+        <br>
+        <button class="btn btn-primary" type="submit"> Add to Basket </button>
+    </form>
+    
 
 
 {% include 'footer.html' %}
