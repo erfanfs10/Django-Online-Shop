@@ -31,6 +31,11 @@ class Basket(models.Model):
         return basket
     
 
+    def get_basket_line(self):
+        basket_line = self.basket_line.select_related("product").prefetch_related("product__images").all()
+        return basket_line
+
+
     @classmethod  
     def get_total_price(cls, basket_line):   # calculate The total Price 
         total = 0
@@ -43,7 +48,11 @@ class Basket(models.Model):
 
         if self.basket_line.filter(product=product_id).exists():
             basket_line = self.basket_line.filter(product = product_id).first()
-            basket_line.quantity += int(quantity)
+            print(quantity)
+            if int(quantity) < basket_line.quantity: 
+                basket_line.quantity = int(quantity)
+            else:
+                basket_line.quantity = int(quantity)
             basket_line.save()
 
         else:

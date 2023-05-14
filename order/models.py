@@ -34,6 +34,26 @@ class Order(models.Model):
         for item in order_item:
             total_price += item.product.price * item.quantity
         return total_price
+    
+    @classmethod
+    def get_order(cls, request, amount):
+        if cls.objects.filter(user=request.user, status="WP").exists():
+            order = cls.objects.filter(user=request.user, status="WP").first()
+            order.delete()
+        order = cls.objects.create(user=request.user, amount=amount)
+        return order
+
+    def get_order_item(self):
+        order_item = self.order_item.select_related("product").all() 
+        return order_item
+    
+    def add_order_item(self, basket_line):
+        for item in basket_line:
+            self.order_item.create(order_id=self.id,
+                                    product=item.product,
+                                    price=item.product.price,
+                                    quantity=item.quantity)
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_item')

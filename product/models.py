@@ -116,7 +116,7 @@ class Rating(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField(null=True, blank=True)
     point = models.DecimalField(max_digits=10, decimal_places=0)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='commens')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT, related_name='comments')
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)

@@ -6,7 +6,7 @@ from .models import Basket
 def basket_view(request):
    
     basket = Basket.get_basket(request)  # this method allways returns a basket   
-    basket_line = basket.basket_line.select_related("product").prefetch_related("product__images").all()
+    basket_line = basket.get_basket_line() # returns items in that basket
     total = Basket.get_total_price(basket_line)  # calculate The total Price
     context = {"basket_line": basket_line, "total": total}
 

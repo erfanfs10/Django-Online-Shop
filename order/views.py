@@ -3,29 +3,24 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from basket.models import Basket
-from shipping.forms import AddressForm
 from shipping.models import Address
-from .models import Order, OrderItem
+from .models import Order
 
 
 @login_required
 def order_add(request):
+
     basket = Basket.get_basket(request)
     basket_line = basket.basket_line.select_related("product").all()
     amount = basket.get_total_price(basket_line)
 
-    if Order.objects.filter(user=request.user, status="WP").exists():
-        return redirect('checkout')
-    else:
-        if basket_line:
-            order = Order.objects.create(user=request.user, amount=amount)
-            for item in basket_line:
-                OrderItem.objects.create(order_id=order.id,
-                                        product=item.product,
-                                        price=item.product.price,
-                                        quantity=item.quantity)
-            return redirect('checkout')
+    if len(basket_line) == 0:
         return render(request, "order/nothing_in_basket.html")
+
+    order = Order.get_order(request, amount)
+    order.add_order_item(basket_line)
+   
+    return redirect('checkout')
 
 
 @login_required
@@ -45,7 +40,7 @@ class Checkout(LoginRequiredMixin, View):
         else:
             return render(request, "order/no_order.html")
         
-        order_item = order.order_item.select_related("product").all() 
+        order_item = order.get_order_item()
         total_price = Order.get_total_price(order_item)
         total_item = order_item.count()
         addresses = Address.objects.filter(user=request.user)
