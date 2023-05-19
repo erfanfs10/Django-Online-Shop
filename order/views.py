@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +9,7 @@ from .models import Order
 
 
 @login_required
-def order_add(request):
+def order_add(request, *args, **kwargs):
 
     basket = Basket.get_basket(request)
     basket_line = basket.basket_line.select_related("product").all()
@@ -19,12 +20,11 @@ def order_add(request):
 
     order = Order.get_order(request, amount)
     order.add_order_item(basket_line)
-   
-    return redirect('checkout')
+    return redirect("checkout")
 
 
 @login_required
-def order_delete(request):
+def order_delete(request, *args, **kwargs):
     order = get_object_or_404(Order, user=request.user)
     order.delete()
     return redirect("basket-view")
@@ -50,8 +50,9 @@ class Checkout(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        
         address = get_object_or_404(Address, pk=request.POST["address"])
-        order = Order.objects.filter(user=request.user, status="WP").update(address=address)
+        Order.objects.filter(user=request.user, status="WP").update(address=address)
 
         '''
         in this stage we must redirect user to the payment page,

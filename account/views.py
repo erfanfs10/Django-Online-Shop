@@ -30,7 +30,7 @@ class LoginView(View):
         return render(request, self.template_name, {"form": form})
 
 
-def logout_view(request):
+def logout_view(request, *args, **kwargs):
     if request.method == "POST":
         logout(request)
         return redirect('home')

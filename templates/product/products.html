@@ -3,40 +3,63 @@
 
 {% block content %}
 {% include 'navbar.html' %}
+<div class="container">
+  <div class="row g-5">
 
-<div class="album py-4 bg-light">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <div class="col-md-8">
 
-        {% for product in products %}
-
-        <div class="col">
-          <div class="card shadow-sm">
-            <a href="{% url 'product-detail' product.pk %}" ><img width="280px" height="280px" src="{{product.images.first.image.url}}" ></a>
-            <div class="card-body">
-              <p class="card-text">{{product.name}}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a class="btn btn-primary" href="{% url 'product-detail' product.id %}" > More Detail </a>
+      <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+        
+          {% for product in products %}
+            <div class="feature col">
+              
+                <div class="card shadow-sm">
+                  <a href="{% url 'product-detail' product.pk %}"><img width="280px" height="280px"
+                      src="{{product.images.first.image.url}}"></a>
+                  <div class="card-body">
+                    <p class="card-text">{{product.name}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <a class="btn btn-primary" href="{% url 'product-detail' product.id %}"> More Detail </a>
+                      </div>
+                      <small class="text">{{product.price}}$</small>
+                    </div>
+                  </div>
                 </div>
-                <small class="text">{{product.price}}$</small>
-              </div>
             </div>
-          </div>
-        </div>
-        {% empty %}
-          <h4>There is no product yet</h4>
-        {% endfor %} 
-
+          {% empty %}
+              <h4>There is no product yet</h4>    
+          {% endfor %}
       </div>
-    </div>
-  </div>
 
+    </div>
+
+    <div class="col-md-4 position-sticky" >
+            <h5>Sort By:</h5>
+            <div class="my-3">
+
+              <form method="get" action="{% url 'products' type %}">
+
+                  <input type="radio" id="new" name="q" value="created">
+                  <label for="new">new</label><br>
+
+                  <input type="radio" id="view" name="q" value="view">
+                  <label for="view">view</label><br>
+
+                  <input type="radio" id="sell" name="q" value="sell">
+                  <label for="sell">sell</label><br >
+
+                  <input type="radio" id="price" name="q" value="price">
+                  <label for="price">price</label><br >
+
+                  <button class="btn btn-primary" type="submit">Sort</button>
+              </form>
+            </div>
+
+    </div>
+
+
+  </div>
+</div>
 {% include 'footer.html' %}
 {% endblock %}
-
-
-
-
-
-
