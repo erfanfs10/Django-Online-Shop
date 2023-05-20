@@ -13,3 +13,8 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ("status",)
     list_editable = ("status",)
     inlines = (OrderItemInline,)
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ("order", "product", "price", "quantity")

@@ -27,21 +27,15 @@
             <h4><a class="btn btn-danger" href="{% url 'basket-delete' line.product.id %}">Delete</a></h4>  
 
         </div>         
-           
-        
-        {% empty %}
-            <h3> You Have No Product In Your Basket </h3>
         {% endfor %}
         <br>
         <br>
         <br>
-
-        {% if total %}
+  
         <h4>Total Price : {{ total | floatformat:2 }}$</h4>
-        {% endif %}
-        {% if basket_line %}
-            <h4><a class="btn btn-success" href="{% url 'order-add'  %}">Order Now!</a></h4>  
-        {% endif %}
+      
+        <h4><a class="btn btn-success" href="{% url 'checkout'  %}">Order Now!</a></h4>  
+      
 
 
     </div>        

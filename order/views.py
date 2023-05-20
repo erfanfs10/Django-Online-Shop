@@ -1,33 +1,12 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
 from django.views import View
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from basket.models import Basket
 from shipping.models import Address
 from .models import Order
-
-
-@login_required
-def order_add(request, *args, **kwargs):
-
-    basket = Basket.get_basket(request)
-    basket_line = basket.basket_line.select_related("product").all()
-    amount = basket.get_total_price(basket_line)
-
-    if len(basket_line) == 0:
-        return render(request, "order/nothing_in_basket.html")
-
-    order = Order.get_order(request, amount)
-    order.add_order_item(basket_line)
-    return redirect("checkout")
-
-
-@login_required
-def order_delete(request, *args, **kwargs):
-    order = get_object_or_404(Order, user=request.user)
-    order.delete()
-    return redirect("basket-view")
 
 
 class Checkout(LoginRequiredMixin, View):
@@ -35,29 +14,42 @@ class Checkout(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
 
-        if Order.objects.filter(user=request.user, status="WP").exists():
-            order = Order.objects.filter(user=request.user, status="WP").first()
-        else:
+        basket = Basket.get_basket(request)
+        basket_line = basket.basket_line.select_related("product").all()
+        if basket_line.count() == 0:
             return render(request, "order/no_order.html")
         
-        order_item = order.get_order_item()
-        total_price = Order.get_total_price(order_item)
-        total_item = order_item.count()
+        amount = basket.get_total_price(basket_line)    
+        total_item = basket.get_total_item(basket_line) #basket_line.count()
         addresses = Address.objects.filter(user=request.user)
-        context = {"order_item": order_item, "addresses": addresses,
-                   "total_item": total_item, "total_price": total_price}
+
+        context = {"basket_line": basket_line, "addresses": addresses,
+                   "total_item": total_item, "total_price": amount}
         
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         
         address = get_object_or_404(Address, pk=request.POST["address"])
-        Order.objects.filter(user=request.user, status="WP").update(address=address)
+        basket = Basket.get_basket(request)
+        basket_line = basket.basket_line.select_related("product").all()
+        amount = basket.get_total_price(basket_line)    
+
+        Order.add_order(request, basket, basket_line, amount, address)
 
         '''
         in this stage we must redirect user to the payment page,
         i don't have any payment page and gateway so i redirect user
-        to the checkout url again!  
+        to the order history again!  
         '''
 
-        return redirect("checkout")
+        return redirect("orders")
+    
+
+class OrdersView(LoginRequiredMixin, ListView):
+    template_name = "order/order_view.html"   
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        orders = Order.get_order(self.request)
+        return orders

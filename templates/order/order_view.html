@@ -4,7 +4,25 @@
 {% block content %}
 {% include 'navbar.html' %}
 
-orders
+<h3>Orders</h3>
+
+{% for order in orders %}
+
+<h5>{{request.user.name}}'s order</h5><br>
+{% for item in order.order_item.all %}
+<h5>{{item.product.name}} * {{item.quantity}} = {% widthratio item.quantity 1 item.price %}$</h5>
+{% endfor %}
+<br>
+<h5>Total Price: {{order.amount}}$</h5>
+<h5>Status: {{ order.get_status_display }}</h5>
+<br>
+------------------------------------
+<br>
+{% empty %}
+<h4>You Have No Orders!</h4>
+{% endfor %}
+<br>
+<br>
 
 {% include 'footer.html' %}
 {% endblock %}

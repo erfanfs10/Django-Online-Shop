@@ -35,24 +35,26 @@ class Basket(models.Model):
         basket_line = self.basket_line.select_related("product").prefetch_related("product__images").all()
         return basket_line
 
-
-    @classmethod  
-    def get_total_price(cls, basket_line):   # calculate The total Price 
+  
+    def get_total_price(self, basket_line):   # calculate The total Price 
         total = 0
         for line in basket_line:   
             total += line.product.price * line.quantity
-        return total    
+        return total
+
+
+    def get_total_item(self, basket_line):   # calculate The total Price 
+        total = 0
+        for line in basket_line:   
+            total += line.quantity
+        return total        
 
 
     def add_to_basket(self, product_id, quantity): #gets a product id and add it to the user BasketLine model
 
         if self.basket_line.filter(product=product_id).exists():
             basket_line = self.basket_line.filter(product = product_id).first()
-            print(quantity)
-            if int(quantity) < basket_line.quantity: 
-                basket_line.quantity = int(quantity)
-            else:
-                basket_line.quantity = int(quantity)
+            basket_line.quantity = int(quantity)
             basket_line.save()
 
         else:
@@ -65,7 +67,6 @@ class Basket(models.Model):
          
 
     def delete_from_basket(self, product_id): #gets a product id and delete it to the user BasketLine model
-
         try:
             product = self.basket_line.get(product=product_id)
         except BasketLine.DoesNotExist:  

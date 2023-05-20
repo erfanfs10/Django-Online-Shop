@@ -28,25 +28,25 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user} order with {self.amount} $"
 
+
     @classmethod
-    def get_total_price(self, order_item):
-        total_price = 0
-        for item in order_item:
-            total_price += item.product.price * item.quantity
-        return total_price
-    
+    def get_order(cls, request):
+        orders = cls.objects.prefetch_related("order_item__product").filter(user=request.user).all()
+        return orders
+
+
     @classmethod
-    def get_order(cls, request, amount):
-        if cls.objects.filter(user=request.user, status="WP").exists():
-            order = cls.objects.filter(user=request.user, status="WP").first()
-            order.delete()
-        order = cls.objects.create(user=request.user, amount=amount)
-        return order
+    def add_order(cls, request, basket, basket_line, amount, address):
+        order = cls.objects.create(user=request.user, amount=amount, address=address)
+        order.add_order_item(basket_line)
+        basket.delete()
+        
 
     def get_order_item(self):
         order_item = self.order_item.select_related("product").all() 
         return order_item
     
+
     def add_order_item(self, basket_line):
         for item in basket_line:
             self.order_item.create(order_id=self.id,

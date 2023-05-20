@@ -6,8 +6,10 @@ from .models import Basket
 def basket_view(request, *args, **kwargs):
     
     basket = Basket.get_basket(request)     # this method allways returns a basket   
-    basket_line = basket.get_basket_line()    # returns items in that basket
-    total = Basket.get_total_price(basket_line)     # calculate The total Price
+    basket_line = basket.get_basket_line() 
+    if basket_line.count() == 0:
+        return render(request, "basket/no_item.html")   # returns items in that basket
+    total = basket.get_total_price(basket_line)     # calculate The total Price
     context = {"basket_line": basket_line, "total": total}
 
     return render(request, "basket/basket_view.html", context)
