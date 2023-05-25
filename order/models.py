@@ -18,7 +18,7 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='orders')
-    address = models.ForeignKey(Address, on_delete=models.PROTECT, related_name='orders', null=True, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, related_name='orders', null=True)
     amount = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     shipping_price = models.SmallIntegerField(default=0)
     status = models.CharField(max_length=2, default=WAITING_FOR_PAY, choices=STATUS)
