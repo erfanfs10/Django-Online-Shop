@@ -17,7 +17,7 @@
                   <a href="{% url 'product-detail' product.pk %}"><img width="280px" height="280px"
                       src="{{product.images.first.image.url}}"></a>
                   <div class="card-body">
-                    <p class="card-text">{{product.name}}</p>
+                    <p class="card-text">{{product.name}} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp rate: {% if product.point %} {{product.point}} {%else%} no rate {% endif %}    </p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
                         <a class="btn btn-primary" href="{% url 'product-detail' product.id %}"> More Detail </a>

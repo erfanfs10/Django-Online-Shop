@@ -1,9 +1,10 @@
-from typing import Any, Dict
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.views.decorators.http import require_GET
-from django.db.models import Q
-from .models import ProductType, Product
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q, Avg
+from .models import ProductType, Product, Rating
+from .forms import RatingForm
 
 
 @require_GET
@@ -35,7 +36,7 @@ class Products(ListView):
 
     def get_queryset(self, *args, **kwargs):
         order_by = self.request.GET.get("q", "created")
-        context = Product.objects.filter(product_type__name=self.kwargs["pk"]).prefetch_related('images').order_by("-"+order_by)
+        context = Product.objects.filter(product_type__name=self.kwargs["pk"]).prefetch_related('images').annotate(point=Avg("comments__point")).order_by("-"+order_by)
         return context   
 
     def get_context_data(self, *args, **kwargs):
@@ -45,11 +46,39 @@ class Products(ListView):
 
     
 
-@require_GET
 def product_detail(request, product_id, *args, **kwargs):
-   
-    product = Product.objects.filter(pk=product_id).prefetch_related("images", "values", "values__attribute").first()
+    product = Product.objects.filter(pk=product_id).prefetch_related("images", "values", "values__attribute", "comments").first()
+    rates = product.comments.all()
     product.view += 1
     product.save()
-    return render(request, "product/product_detail.html", {"product": product})
-    
+    context = {"product": product, "rates": rates, "form": RatingForm(initial={"point": 1})}
+
+    if request.method == "POST":
+        if not request.user.is_authenticated: # the user must login to rate
+            return redirect("login")
+        form = RatingForm(request.POST)
+
+        can_rate = form.check_buy(request.user, product, form)
+
+        """
+            the check_buy method checks if user bought that product or not
+            because only users that bought that product can rate .
+            it returns True or False and store it in can_rate variable.
+        """
+
+        if can_rate:
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.user = request.user
+                instance.product = product
+                instance.save()
+                return redirect(request.META.get('HTTP_REFERER'))  
+        context["form"] = form  
+       
+    return render(request, "product/product_detail.html", context)
+
+
+@login_required
+def rates(request):
+    rates = Rating.objects.filter(user=request.user).select_related("product")
+    return render(request, "product/rates.html", {"rates": rates})

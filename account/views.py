@@ -68,7 +68,6 @@ class ProfileView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             return redirect('home')
-        form = ProfileForm(request.POST, instance=request.user)
         return render(request, "account/profile.html", {"form": form}) 
     
 

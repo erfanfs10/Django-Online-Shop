@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from .views import Categoty, Products, product_detail, search, category_list
+from .views import Categoty, Products, product_detail, search, category_list, rates
 
 
 urlpatterns = [
@@ -22,4 +22,6 @@ urlpatterns = [
     # show's products when you search on navbar
     path('search/', search, name='search'),
     
+    # show's user's rates
+    path("rates/", rates, name="rates")
 ]

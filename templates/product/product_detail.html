@@ -1,8 +1,33 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
 {% include 'navbar.html' %}
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
     <h5>Product Brand: {{product.brand}}</h5>
     <h5>Product Name: {{product.name}}</h5>
@@ -26,8 +51,28 @@
         <br>
         <button class="btn btn-primary" type="submit"> Add to Basket </button>
     </form>
-    
+    <br>
+    <h4>Rating</h4>
+    <br>
+    {% for rate in rates %}
+        <h6>Point: {{rate.point}}</h6>
+        <h6>Title: {{rate.title}}</h6>
+        <h6>Body:  {{rate.body}}</h6>
+        -----------------------
+    {% empty %}
+    <h5>* This product has no rate yet!</h5>
+    {% endfor %}
+    <br>
+    <form method="post" action="{% url 'product-detail' product.id %}">
+        {{form | crispy}}
+        {% csrf_token %}
+        <input type="hidden" id="product_id" name="product_id" value="{{product.id}}">
+        <button class="btn btn-primary" type="submit"> rate </button>
+    </form>
 
-
+<br>
+<br>
+<br>
+<br>
 {% include 'footer.html' %}
 {% endblock %}

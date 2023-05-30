@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<h3>Your Ratings</h3>
+{% for rate in rates %}
+    <h5>Product: {{rate.product}}</h5>
+    <h5>Point: {{rate.point}}</h5>
+    <h5>Title: {{rate.title}}</h5>
+    <h5>Body: {{rate.body}}</h5>
+    ---------------------
+{% empty %}
+{% endfor %}
+
+{% include 'footer.html' %}
+{% endblock %}

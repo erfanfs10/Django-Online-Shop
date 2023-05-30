@@ -26,7 +26,7 @@ class Order(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user} order with {self.amount} $"
+        return f'{self.user.email} -- order'
 
 
     @classmethod
@@ -49,6 +49,9 @@ class Order(models.Model):
 
     def add_order_item(self, basket_line):
         for item in basket_line:
+            product = item.product
+            product.sell+= int(item.quantity)
+            product.save()
             self.order_item.create(order_id=self.id,
                                     product=item.product,
                                     price=item.product.price,
@@ -62,4 +65,5 @@ class OrderItem(models.Model):
     quantity = models.SmallIntegerField(default=1)
 
     def __str__(self):
-        return f"order_line {self.order}"
+        return f'{self.order} -- orderitem'
+ 
