@@ -6,4 +6,4 @@ local_*.py
 __pycatch__/
 media/product_images/*.*
 media/product_type_images/*.*
-
+*.log

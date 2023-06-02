@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from .local_setting import SECRET_KEY, DEBUG, APP_PASSWORD, EMAIL, ALLOWED_HOSTS
+from kombu import Queue, Exchange
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -188,3 +189,22 @@ EMAIL_HOST_USER = EMAIL
 EMAIL_HOST_PASSWORD = APP_PASSWORD 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_TIMEZONE = "Asia/Tehran"
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+Eemail_exchange = Exchange('Eemail', type='direct')
+
+CELERY_QUEUES = (
+    Queue('Eemail', Eemail_exchange, routing_key='Eemail'),
+)
+
+CELERY_DEFAULT_QUEUE = 'Eemail   '
+CELERY_DEFAULT_EXCHANGE = 'Eemail'
+CELERY_DEFAULT_ROUTING_KEY = 'Eemail'
+CELERY_ROUTES = ({'tasks.send_welcome_email_eco': {
+                        'queue': 'Eemail',
+                        'routing_key': 'Eemail'
+                 }})

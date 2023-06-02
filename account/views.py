@@ -51,6 +51,12 @@ class RegisterView(View):
             user = form.save(commit=False)
             form.save()
             login(request, user)
+            
+            print("afret login")
+            subject = 'Welcome to My Site!'
+            message = f'Hi {user.name},\n\nThanks for registering on My Site!'
+            user.send_welcome_email(subject, message) # send welcome email to user
+
             return redirect('home')
         return render(request, self.template_name, {"form": form})
 
