@@ -22,7 +22,7 @@ How to run the project?
   * install Redis and make sure it's active and running
   
 3:
-  * Create a file with name local_setting.py beside of setting.py and add the following code:
+  * Create a file with the name local_setting.py beside setting.py and add the following code:
   
   * SECRET_KEY = 'YOUR SECRET KEY'
   * DEBUG = True          # if you want to use this project in production change the value to False.
@@ -38,7 +38,7 @@ How to run the project?
   * run python manage.py runserver
 
 6:
-  * celery -A E_commerce worker -Q Eemail -l INFO --logfile=/var/log/celery/celery_eco.log    # if you don't run this, emails will not send to the users.
+  * celery -A E_commerce worker -Q Eemail -l INFO   # if you don't run this, emails will not send to the users.
 
   
 ENJOY THE PROJECT :)
