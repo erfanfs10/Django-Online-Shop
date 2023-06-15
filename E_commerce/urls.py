@@ -5,13 +5,13 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('eco/admin/', admin.site.urls),
-    path('eco/', include('product.urls')),
-    path('eco/__debug__/', include('debug_toolbar.urls')),
-    path('eco/account/', include("account.urls")),
-    path('eco/basket/', include("basket.urls")),
-    path('eco/shipping/', include("shipping.urls")),
-    path('eco/order/', include("order.urls"))
+    path('admin/', admin.site.urls),
+    path('', include('product.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('account/', include("account.urls")),
+    path('basket/', include("basket.urls")),
+    path('shipping/', include("shipping.urls")),
+    path('order/', include("order.urls"))
 
 ] 
 
