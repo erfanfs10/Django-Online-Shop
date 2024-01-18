@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from .local_setting import SECRET_KEY, DEBUG, APP_PASSWORD, EMAIL, ALLOWED_HOSTS
 from kombu import Queue, Exchange
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY
+SECRET_KEY = "jbhrbvbrjb784y4&^8498q4y783huhovih4r5g6r"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DEBUG
+DEBUG = True
 
-ALLOWED_HOSTS = ALLOWED_HOSTS
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -184,8 +183,8 @@ DEBUG_TOOLBAR_PANELS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = EMAIL
-EMAIL_HOST_PASSWORD = APP_PASSWORD 
+EMAIL_HOST_USER = "EMAIL"
+EMAIL_HOST_PASSWORD = "APP_PASSWORD" 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
